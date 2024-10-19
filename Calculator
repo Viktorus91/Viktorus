@@ -1,0 +1,90 @@
+//Результатом сложения двух строк, является строка состоящая из переданных.
+//Результатом деления строки на число n, является строка в n раз короче исходной (смотрите пример).
+//Результатом умножения строки на число n, является строка, в которой переданная строка повторяется ровно n раз.
+//Результатом вычитания строки из строки, является строка, в которой удалена переданная подстрока или сама исходная строка, если в нее нет вхождения вычитаемой строки (смотрите пример).
+//Результатом вычитания строки из строки, является строка,
+// в которой удалена переданная подстрока или сама исходная строка, если в нее нет вхождения вычитаемой строки (смотрите пример).
+//Калькулятор должен принимать на вход числа от 1 до 10 включительно, не более. И строки длинной не более 10 символов. Если строка, полученная в результате работы приложения длинее 40 симовлов, то в выводе после 40 символа должны стоять три точки (...)
+//Калькулятор умеет работать только с целыми числами.
+//Первым аргументом выражения, подаваемого на вход, должна быть строка, при вводе пользователем выражения вроде 3 + "hello",
+@@ -56,39 +57,60 @@
+//Принципы оценки работы:
+//Обратите внимание на принципы ООП, постарайтесь разбить программу на логические классы. Решения, в которых весь код программы находится в одном классе будут низко оценены. Продемонстрируйте своё умение в работе с разными синтаксическими конструкциями, не забудьте про исключительные ситуации, при которых выполнение программы невозможно из-за некорректных входных данных.
+public class Main {
+    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        String exp = scn.nextLine();
+        exp = exp.replace("\"", "");
+        String[] data;
+        char action;
+        if(exp.contains("+")) {
+            data = exp.split("\\+");
+            action='+';
+        }
+        else if(exp.contains("-")){
+            data = exp.split("-");
+            action='-';
+        }
+        else if(exp.contains("*")){
+            data = exp.split("\\*");
+            action='*';
+        String[] data;
+        if (exp.contains(" + ")) {
+            data = exp.split(" \\+ ");
+            action = '+';
+        } else if (exp.contains(" - ")) {
+            data = exp.split(" - ");
+            action = '-';
+        } else if (exp.contains(" * ")) {
+            data = exp.split(" \\* ");
+            action = '*';
+        } else if (exp.contains(" / ")) {
+            data = exp.split(" / ");
+            action = '/';
+        }else{
+            throw new Exception("Некорректный знак действия");
+        }
+        else {
+            data = exp.split("/");
+            action='/';
+        if (action == '*' || action == '/') {
+            if (data[1].contains("\"")) throw new Exception("Строчку можно делить или умножать только на число");
+        }
+        if(action == '+'){
+            System.out.println(data[0]+data[1]);
+        for (int i = 0; i < data.length; i++) {
+            data[i] = data[i].replace("\"", "");
+        }
+        else if(action == '*'){
+        if (action == '+') {
+            printInQuotes(data[0] + data[1]);
+        } else if (action == '*') {
+            int multiplier = Integer.parseInt(data[1]);
+            String result = "";
+            for (int i = 0; i < multiplier; i++) {
+                System.out.print(data[0]);
+                result+=data[0];
+            }
+            printInQuotes(result);
+        } else if (action == '-') {
+            int index = data[0].indexOf(data[1]);
+            if(index == -1){
+                printInQuotes(data[0]);
+            }else{
+                String result = data[0].substring(0, index);
+                result+=data[0].substring(index+data[1].length());
+                printInQuotes(result);
+            }
+        }else{
+            int newLen = data[0].length()/Integer.parseInt(data[1]);
+            String result = data[0].substring(0,newLen);
+            printInQuotes(result);
+        }
+
+
+    }
+    static void printInQuotes(String text){
+        System.out.println("\""+text+"\"");
+    }
+}
